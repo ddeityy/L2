@@ -51,6 +51,55 @@ func main() {
 
 Ответ:
 ```
+1
+2
+3
+4
+5
+6
+7
+8
+0
+0
+0
+0
 ...
+```
 
+В функции `merge` в блоке `select` нет проверки на то,
+возвращается ли из канала стандартное значение.
+После закрытия входного канала (`a` и `b`) в выходной канал будут отправляться нули (стандартное значение для `int`).
+
+В Go нет способа проверить закрыт ли канал не вычитывая из него значения,
+поэтому для слияния двух каналов нужно применить другой подход:
+
+
+```go
+func merge(a, b <-chan int) <-chan int {
+	out := make(chan int)
+	var wg sync.WaitGroup
+
+	wg.Add(2)
+
+	go func(ch <-chan int) {
+		for v := range ch {
+			out <- v
+		}
+		wg.Done()
+	}(a)
+
+	go func(ch <-chan int) {
+		for v := range ch {
+			out <- v
+		}
+		wg.Done()
+	}(b)
+
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+
+	return out
+}
 ```

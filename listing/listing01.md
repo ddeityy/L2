@@ -37,5 +37,5 @@ fmt.Println(b[1]) // 99
 ```go
 a := [5]int{76, 77, 78, 79, 80}
 var b []int = a[1:4:5]  //cap = 5
-var c []int = a[1:4:6]  //ошибка
+var c []int = a[1:4:6]  //cap = 6, ошибка
 ```

@@ -31,6 +31,14 @@ func main() {
 
 Ответ:
 ```
-...
+error
+```
+Интерфейс равен `nil`, только если и тип, и значение равны `nil`.
+В нашем случае функция `test` возвращает интерфейс `error`, в котором данные будут `nil`,
+но тип = `*main.customError`, и он не равен `nil`.
 
+Это можно проверить с помощью библиотеки reflect.
+```go
+fmt.Println(reflect.TypeOf(err).String()) // *main.customError
+fmt.Println(reflect.ValueOf(err).IsNil()) // true
 ```
