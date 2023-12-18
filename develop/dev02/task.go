@@ -1,5 +1,10 @@
 package main
 
+import (
+	"os"
+	"unpacker/unpack"
+)
+
 /*
 === Задача на распаковку ===
 
@@ -19,5 +24,5 @@ package main
 */
 
 func main() {
-
+	os.Exit(unpack.CLI(os.Args[1:]))
 }
