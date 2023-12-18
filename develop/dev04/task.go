@@ -25,7 +25,15 @@ import (
 Программа должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
 
-func findAnagrams(words []string) map[string][]string {
+func findAnagrams(words []string) (map[string][]string, error) {
+	if words == nil {
+		return nil, fmt.Errorf("input slice must not be nil")
+	}
+
+	if len(words) < 2 {
+		return nil, fmt.Errorf("input slice must have at least 2 elements")
+	}
+
 	result := make(map[string][]string)
 	exists := make(map[string]struct{})
 
@@ -43,7 +51,7 @@ func findAnagrams(words []string) map[string][]string {
 		}
 	}
 
-	return result
+	return result, nil
 }
 
 // Приводим все строки к нижнему регистру
@@ -78,8 +86,11 @@ func anagrams(str1, str2 string) bool {
 }
 
 func main() {
-	words := []string{"абоба", "пятак", "пятка", "тяпка", "листок", "слиток", "СтоЛИК", "ПЯТКА", "листок"}
-	words = formatData(words)
-	res := findAnagrams(words)
+	var words []string
+	res, err := findAnagrams(words)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	fmt.Println(res)
 }
