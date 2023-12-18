@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+	"reflect"
+	"strings"
+)
+
 /*
 === Поиск анаграмм по словарю ===
 
@@ -19,6 +25,61 @@ package main
 Программа должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
 
-func main() {
+func findAnagrams(words []string) map[string][]string {
+	result := make(map[string][]string)
+	exists := make(map[string]struct{})
 
+	for i, word := range words {
+		exists[word] = struct{}{}
+		for j := i + 1; j < len(words); j++ {
+			if _, ok := exists[words[j]]; ok {
+				continue
+			}
+
+			if anagrams(word, words[j]) {
+				result[word] = append(result[word], words[j])
+				exists[words[j]] = struct{}{}
+			}
+		}
+	}
+
+	return result
+}
+
+// Приводим все строки к нижнему регистру
+func formatData(words []string) []string {
+	res := make([]string, 0, len(words))
+
+	for _, v := range words {
+		str := strings.ToLower(v)
+		res = append(res, str)
+	}
+
+	return res
+}
+
+// Проверяем если 2 строки - анаграмы
+func anagrams(str1, str2 string) bool {
+	if len(str1) != len(str2) {
+		return false
+	}
+
+	s1 := make(map[rune]struct{})
+	for _, v := range str1 {
+		s1[v] = struct{}{}
+	}
+
+	s2 := make(map[rune]struct{})
+	for _, v := range str2 {
+		s2[v] = struct{}{}
+	}
+
+	return reflect.DeepEqual(s1, s2)
+}
+
+func main() {
+	words := []string{"абоба", "пятак", "пятка", "тяпка", "листок", "слиток", "СтоЛИК", "ПЯТКА", "листок"}
+	words = formatData(words)
+	res := findAnagrams(words)
+	fmt.Println(res)
 }
