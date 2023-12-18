@@ -86,7 +86,8 @@ func anagrams(str1, str2 string) bool {
 }
 
 func main() {
-	var words []string
+	words := []string{"пятак", "пятка", "тяпка", "листок", "слиток", "столик", "столик", "стоЛик", "листОК"}
+	words = formatData(words)
 	res, err := findAnagrams(words)
 	if err != nil {
 		fmt.Println(err)
