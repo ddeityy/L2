@@ -1,5 +1,10 @@
 package main
 
+import (
+	"ntp/ntp"
+	"os"
+)
+
 /*
 === Базовая задача ===
 
@@ -13,5 +18,5 @@ package main
 */
 
 func main() {
-
+	os.Exit(ntp.CLI(os.Args[1:]))
 }
