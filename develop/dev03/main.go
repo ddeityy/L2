@@ -1,5 +1,10 @@
 package main
 
+import (
+	"os"
+	sorter "sorter/sort"
+)
+
 /*
 === Утилита sort ===
 
@@ -26,5 +31,10 @@ package main
 */
 
 func main() {
-
+	var app sorter.App
+	err := app.FromArgs(os.Args[1:])
+	if err != nil {
+		panic(err)
+	}
+	app.Run()
 }
