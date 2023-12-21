@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"os"
-	"unpacker/unpack"
+	"strconv"
+	"strings"
+	"unicode"
 )
 
 /*
@@ -24,5 +27,55 @@ import (
 */
 
 func main() {
-	os.Exit(unpack.CLI(os.Args[1:]))
+	res, err := unpack(os.Args[1])
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func unpack(input string) (string, error) {
+	runes := []rune(input)
+	var b strings.Builder
+
+	for i, v := range runes {
+		if unicode.IsDigit(runes[i]) {
+			if i == 0 {
+				return "", fmt.Errorf("invalid string")
+			}
+
+			if unicode.IsDigit(runes[i-1]) {
+				continue
+			}
+
+			letter := runes[i-1]
+
+			num := strings.Builder{}
+			num.WriteRune(v)
+
+			for j := i + 1; j < len(runes); j++ {
+				if !unicode.IsDigit(runes[j]) {
+					break
+				}
+				num.WriteRune(runes[j])
+			}
+
+			repeats, err := strconv.Atoi(num.String())
+			if err != nil {
+				return "", err
+			}
+
+			for j := 0; j < repeats-1; j++ {
+				b.WriteRune(letter)
+			}
+
+			continue
+		}
+		_, err := b.WriteRune(runes[i])
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return b.String(), nil
 }
