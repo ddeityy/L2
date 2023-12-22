@@ -58,19 +58,17 @@ func main() {
 	)
 
 	fmt.Printf("exit after %v\n", time.Since(start))
-
 }
 
 func or[T any](channels ...<-chan T) <-chan T {
-	out := make(chan T)
-	exitchan := make(chan struct{})
+	outCh := make(chan T)
+	exitCh := make(chan struct{})
 
 	output := func(c <-chan T) {
 		for n := range c {
-			out <- n
+			outCh <- n
 		}
-		exitchan <- struct{}{}
-
+		exitCh <- struct{}{}
 	}
 
 	for _, c := range channels {
@@ -78,8 +76,9 @@ func or[T any](channels ...<-chan T) <-chan T {
 	}
 
 	go func() {
-		<-exitchan
-		close(out)
+		<-exitCh
+		close(outCh)
 	}()
-	return out
+
+	return outCh
 }
