@@ -1,5 +1,10 @@
 package main
 
+import (
+	"cut/cut"
+	"os"
+)
+
 /*
 === Утилита cut ===
 
@@ -14,5 +19,5 @@ package main
 */
 
 func main() {
-
+	os.Exit(cut.CLI(os.Args[1:]))
 }
