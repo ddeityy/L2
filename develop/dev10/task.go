@@ -1,11 +1,18 @@
 package main
 
+import (
+	"os"
+	"telnet/telnet"
+)
+
 /*
 === Утилита telnet ===
 
 Реализовать примитивный telnet клиент:
 Примеры вызовов:
-go-telnet --timeout=10s host port go-telnet mysite.ru 8080 go-telnet --timeout=3s 1.1.1.1 123
+go-telnet --timeout=10s host port
+go-telnet mysite.ru 8080
+go-telnet --timeout=3s 1.1.1.1 123
 
 Программа должна подключаться к указанному хосту (ip или доменное имя) и порту по протоколу TCP.
 После подключения STDIN программы должен записываться в сокет, а данные полученные и сокета должны выводиться в STDOUT
@@ -16,5 +23,5 @@ go-telnet --timeout=10s host port go-telnet mysite.ru 8080 go-telnet --timeout=3
 */
 
 func main() {
-
+	os.Exit(telnet.CLI(os.Args[1:]))
 }
