@@ -31,7 +31,7 @@ Web-сервер должен запускаться на порту указа�
 
 import (
 	"calendar/api"
-	"calendar/http/server"
+	"calendar/server"
 	"os"
 
 	"go.uber.org/zap"
@@ -58,12 +58,12 @@ func main() {
 
 	api := api.NewAPI(db)
 
-	server.AddRoute("/create_event", api.CreateEvent)
-	server.AddRoute("/update_event", api.UpdateEvent)
-	server.AddRoute("/delete_event", api.DeleteEvent)
-	server.AddRoute("/events_for_day", api.GetEventsForDay)
-	server.AddRoute("/events_for_week", api.GetEventsForWeek)
-	server.AddRoute("/events_for_month", api.GetEventsForMonth)
+	server.POST("/create_event", api.CreateEvent)
+	server.POST("/update_event", api.UpdateEvent)
+	server.POST("/delete_event", api.DeleteEvent)
+	server.GET("/events_for_day", api.GetEventsForDay)
+	server.GET("/events_for_week", api.GetEventsForWeek)
+	server.GET("/events_for_month", api.GetEventsForMonth)
 
 	server.Run()
 
